@@ -1,2 +1,8 @@
+# general ignore
 node_modules
+
+# lib ignore
 dist
+
+# utility ignores
+coverage

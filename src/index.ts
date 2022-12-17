@@ -1,7 +1,3 @@
-const foo = () => {
-  console.log("Hello World");
-};
+import { Dice } from "./Dice";
 
-foo();
-
-export default foo;
+export default Dice;
