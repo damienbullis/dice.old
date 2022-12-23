@@ -1,4 +1,4 @@
-import Dice from "./index";
+import { Facings, Dice } from "./index";
 
 const dice = new Dice();
 describe("Dice", () => {
@@ -31,7 +31,6 @@ describe("Dice", () => {
     it("should roll a D12", () => {
       const result = dice.D12().roll();
       expect(result.length).toBe(1);
-      expect(typeof result[0]).toBe("number");
       expect(result[0]).toBeGreaterThanOrEqual(1);
       expect(result[0]).toBeLessThanOrEqual(12);
     });
@@ -40,7 +39,6 @@ describe("Dice", () => {
     it("should roll a D10", () => {
       const result = dice.D10().roll();
       expect(result.length).toBe(1);
-      expect(typeof result[0]).toBe("number");
       expect(result[0]).toBeGreaterThanOrEqual(1);
       expect(result[0]).toBeLessThanOrEqual(10);
     });
@@ -49,7 +47,6 @@ describe("Dice", () => {
     it("should roll a D8", () => {
       const result = dice.D8().roll();
       expect(result.length).toBe(1);
-      expect(typeof result[0]).toBe("number");
       expect(result[0]).toBeGreaterThanOrEqual(1);
       expect(result[0]).toBeLessThanOrEqual(8);
     });
@@ -58,7 +55,6 @@ describe("Dice", () => {
     it("should roll a D6", () => {
       const result = dice.D6().roll();
       expect(result.length).toBe(1);
-      expect(typeof result[0]).toBe("number");
       expect(result[0]).toBeGreaterThanOrEqual(1);
       expect(result[0]).toBeLessThanOrEqual(6);
     });
@@ -67,9 +63,24 @@ describe("Dice", () => {
     it("should roll a D4", () => {
       const result = dice.D4().roll();
       expect(result.length).toBe(1);
-      expect(typeof result[0]).toBe("number");
       expect(result[0]).toBeGreaterThanOrEqual(1);
       expect(result[0]).toBeLessThanOrEqual(4);
     });
+  });
+});
+describe("Custom Dice", () => {
+  it("returns custom facings from results", () => {
+    const facings = ["a", "b", "c", "d", "e", "f"];
+    const dice = new Facings(facings);
+    const result = dice.roll();
+    expect(result.length).toBe(1);
+    expect(facings).toContain(result[0]);
+  });
+  it("roll multiple dice, and results returns facings", () => {
+    const facings = ["one", "two", "three"];
+    const dice = new Facings(facings);
+    const result = dice.roll(3);
+    expect(result.length).toBe(3);
+    expect(facings).toContain(result[0]);
   });
 });

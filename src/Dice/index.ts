@@ -1,21 +1,23 @@
 type T_sortOptions = "high" | "low";
 
-function sortedBy(type: T_sortOptions, sorted: number[]) {
+function _sortedBy(type: T_sortOptions, sorted: number[]) {
   return sorted.sort((a, b) => (type === "high" ? a - b : b - a));
 }
 
-class Dice {
+class BaseDice {
   /** Internal State */
-  private results: number[] = [];
+  protected results: number[] = [];
 
   // Internal methods
-  private pushRoll(sides: number, times: number) {
+  protected pushRoll(sides: number, times: number) {
     for (let i = 0; i < times; i++) {
       this.results.push(Math.floor(Math.random() * sides) + 1);
     }
   }
+}
 
-  // Roll methods
+class Dice extends BaseDice {
+  // Basic Roll methods
 
   /**
    * Roll a D20.
@@ -66,7 +68,7 @@ class Dice {
     return this;
   }
 
-  // Ultility methods
+  /** Return methods */
 
   /**
    * Drop the lowest or highest rolls.
@@ -74,19 +76,15 @@ class Dice {
    * @param n The number of rolls to drop.
    */
   drop(type: T_sortOptions, n: number) {
-    const notDropped = sortedBy(type, this.results).slice(
-      0,
-      this.results.length - n
-    );
-    this.results = [...notDropped];
+    this.results = [
+      ..._sortedBy(type, this.results).slice(0, this.results.length - n),
+    ];
     return this;
   }
 
-  // Return methods
-
   /**
-   * Main Return Method
-   * Roll returns the results of the rolls made and resets the results array.
+   * Resets the results array and returns the results.
+   * @returns The results of the rolls made.
    */
   roll() {
     const copyResults = [...this.results];
@@ -95,4 +93,23 @@ class Dice {
   }
 }
 
-export default Dice;
+class Facings extends BaseDice {
+  private options: string[];
+  constructor(options: string[]) {
+    super();
+    this.options = options;
+  }
+
+  // Custom Roll methods
+  roll(x = 1) {
+    const len = this.options.length;
+    this.pushRoll(len, x);
+    const mapped = this.results.map(
+      (result) => this.options[result - 1] as string
+    );
+    this.results = [];
+    return mapped;
+  }
+}
+
+export { Dice, Facings };
