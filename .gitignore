@@ -1,5 +1,6 @@
 # general ignore
 node_modules
+.vscode
 
 # lib ignore
 dist
